@@ -241,8 +241,42 @@ header h1 {
 }
 
 .sources-content {
-    padding: 0 0.5rem 0.25rem 1.5rem;
+    padding: 0.5rem 0.5rem 0.5rem 1.5rem;
     color: var(--text-secondary);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.sources-content .source-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.7rem;
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--text-primary);
+    border: 1px solid rgba(37, 99, 235, 0.28);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    max-width: 100%;
+}
+
+.sources-content .source-link {
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.sources-content .source-link:hover {
+    background: rgba(37, 99, 235, 0.22);
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.sources-content .source-link:focus-visible {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 /* Markdown formatting styles */
@@ -447,7 +481,8 @@ header h1 {
 
 /* Sidebar Headers */
 .stats-header,
-.suggested-header {
+.suggested-header,
+.new-chat-button {
     font-size: 0.875rem;
     font-weight: 600;
     color: var(--text-secondary);
@@ -463,13 +498,22 @@ header h1 {
 }
 
 .stats-header:focus,
-.suggested-header:focus {
+.suggested-header:focus,
+.new-chat-button:focus-visible {
     color: var(--primary-color);
 }
 
 .stats-header:hover,
-.suggested-header:hover {
+.suggested-header:hover,
+.new-chat-button:hover {
     color: var(--primary-color);
+}
+
+.new-chat-button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
 }
 
 .stats-header::-webkit-details-marker,

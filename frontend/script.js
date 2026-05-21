@@ -5,7 +5,7 @@ const API_URL = '/api';
 let currentSessionId = null;
 
 // DOM elements
-let chatMessages, chatInput, sendButton, totalCourses, courseTitles;
+let chatMessages, chatInput, sendButton, totalCourses, courseTitles, newChatButton;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,7 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     sendButton = document.getElementById('sendButton');
     totalCourses = document.getElementById('totalCourses');
     courseTitles = document.getElementById('courseTitles');
-    
+    newChatButton = document.getElementById('newChatButton');
+
     setupEventListeners();
     createNewSession();
     loadCourseStats();
@@ -28,8 +29,10 @@ function setupEventListeners() {
     chatInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') sendMessage();
     });
-    
-    
+
+    // New chat
+    newChatButton.addEventListener('click', startNewChat);
+
     // Suggested questions
     document.querySelectorAll('.suggested-item').forEach(button => {
         button.addEventListener('click', (e) => {
@@ -38,6 +41,22 @@ function setupEventListeners() {
             sendMessage();
         });
     });
+}
+
+async function startNewChat() {
+    const previousSessionId = currentSessionId;
+    createNewSession();
+    chatInput.focus();
+
+    if (previousSessionId) {
+        try {
+            await fetch(`${API_URL}/sessions/${encodeURIComponent(previousSessionId)}`, {
+                method: 'DELETE'
+            });
+        } catch (error) {
+            console.error('Failed to clear previous session on backend:', error);
+        }
+    }
 }
 
 
@@ -122,10 +141,19 @@ function addMessage(content, type, sources = null, isWelcome = false) {
     let html = `<div class="message-content">${displayContent}</div>`;
     
     if (sources && sources.length > 0) {
+        const renderedSources = sources.map(s => {
+            const text = escapeHtml(s.text);
+            if (s.link) {
+                const href = escapeHtml(s.link);
+                return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="source-chip source-link">${text}</a>`;
+            }
+            return `<span class="source-chip">${text}</span>`;
+        }).join('');
+
         html += `
             <details class="sources-collapsible">
                 <summary class="sources-header">Sources</summary>
-                <div class="sources-content">${sources.join(', ')}</div>
+                <div class="sources-content">${renderedSources}</div>
             </details>
         `;
     }

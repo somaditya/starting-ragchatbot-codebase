@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./run.sh *)",
+      "mcp__playwright__browser_navigate",
+      "Bash(curl *)",
+      "Bash(npx playwright *)",
+      "Read(//home/somaditya/.cache/ms-playwright/chromium-1223/**)",
+      "Bash(/home/somaditya/.cache/ms-playwright/chromium-1223/chrome-linux64/chrome --headless --disable-gpu --no-sandbox --hide-scrollbars --window-size=1400,900 --screenshot=/tmp/page.png http://127.0.0.1:8000)",
+      "Read(//home/somaditya/.claude/**)",
+      "Bash(/home/somaditya/.cache/ms-playwright/chromium-1223/chrome-linux64/chrome --headless --disable-gpu --no-sandbox --hide-scrollbars --force-device-scale-factor=3 --window-size=400,250 --screenshot=/tmp/sidebar.png http://127.0.0.1:8000)",
+      "Bash(grep -n -E \"^button|^[^,{}/]*button[^-a-zA-Z]\" /home/somaditya/DeepLearning_AI/starting-ragchatbot-codebase/frontend/style.css)",
+      "Bash(/home/somaditya/.cache/ms-playwright/chromium-1223/chrome-linux64/chrome --headless --disable-gpu --no-sandbox --hide-scrollbars --window-size=1400,900 --screenshot=/tmp/page2.png http://127.0.0.1:8000)",
+      "Bash(convert /tmp/page2.png -crop 320x250+0+0 /tmp/sidebar_crop.png)",
+      "Read(//tmp/**)",
+      "Bash(uv run *)",
+      "Bash(git add *)"
+    ]
+  }
+}

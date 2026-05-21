@@ -40,10 +40,15 @@ class QueryRequest(BaseModel):
     query: str
     session_id: Optional[str] = None
 
+class SourceCitation(BaseModel):
+    """A single source citation surfaced from a tool search"""
+    text: str
+    link: Optional[str] = None
+
 class QueryResponse(BaseModel):
     """Response model for course queries"""
     answer: str
-    sources: List[str]
+    sources: List[SourceCitation]
     session_id: str
 
 class CourseStats(BaseModel):
@@ -84,6 +89,12 @@ async def get_course_stats():
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/api/sessions/{session_id}", status_code=204)
+async def delete_session(session_id: str):
+    """Discard a conversation session's in-memory history."""
+    rag_system.session_manager.delete_session(session_id)
+    return None
 
 @app.on_event("startup")
 async def startup_event():
