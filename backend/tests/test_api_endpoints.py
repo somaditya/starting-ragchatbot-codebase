@@ -7,7 +7,6 @@ paths, and session handling — none of it depends on ChromaDB or Anthropic.
 
 import pytest
 
-
 # ---------------------------------------------------------------------------
 # POST /api/query
 # ---------------------------------------------------------------------------
@@ -45,9 +44,7 @@ def test_query_creates_session_when_omitted(client, mock_rag_system):
 
 @pytest.mark.api
 def test_query_uses_provided_session_id(client, mock_rag_system):
-    response = client.post(
-        "/api/query", json={"query": "hi", "session_id": "preset-session"}
-    )
+    response = client.post("/api/query", json={"query": "hi", "session_id": "preset-session"})
 
     assert response.status_code == 200
     assert response.json()["session_id"] == "preset-session"
@@ -86,9 +83,7 @@ def test_query_rag_failure_returns_500(client, mock_rag_system):
 def test_query_empty_sources_list_is_allowed(client, mock_rag_system):
     mock_rag_system.query.return_value = ("direct answer", [])
 
-    response = client.post(
-        "/api/query", json={"query": "general knowledge", "session_id": "s2"}
-    )
+    response = client.post("/api/query", json={"query": "general knowledge", "session_id": "s2"})
 
     assert response.status_code == 200
     body = response.json()
