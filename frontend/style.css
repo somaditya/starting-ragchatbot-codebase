@@ -5,8 +5,9 @@
     padding: 0;
 }
 
-/* CSS Variables */
-:root {
+/* CSS Variables - Dark theme (default) */
+:root,
+[data-theme="dark"] {
     --primary-color: #2563eb;
     --primary-hover: #1d4ed8;
     --background: #0f172a;
@@ -22,6 +23,33 @@
     --focus-ring: rgba(37, 99, 235, 0.2);
     --welcome-bg: #1e3a5f;
     --welcome-border: #2563eb;
+    --code-bg: rgba(0, 0, 0, 0.2);
+    --source-chip-bg: rgba(37, 99, 235, 0.1);
+    --source-chip-border: rgba(37, 99, 235, 0.28);
+    --source-chip-hover-bg: rgba(37, 99, 235, 0.22);
+}
+
+/* CSS Variables - Light theme */
+[data-theme="light"] {
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --background: #f8fafc;
+    --surface: #ffffff;
+    --surface-hover: #f1f5f9;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --border-color: #e2e8f0;
+    --user-message: #2563eb;
+    --assistant-message: #e2e8f0;
+    --shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.08);
+    --radius: 12px;
+    --focus-ring: rgba(37, 99, 235, 0.25);
+    --welcome-bg: #eff6ff;
+    --welcome-border: #2563eb;
+    --code-bg: rgba(15, 23, 42, 0.06);
+    --source-chip-bg: rgba(37, 99, 235, 0.08);
+    --source-chip-border: rgba(37, 99, 235, 0.35);
+    --source-chip-hover-bg: rgba(37, 99, 235, 0.16);
 }
 
 /* Base Styles */
@@ -34,6 +62,92 @@ body {
     overflow: hidden;
     margin: 0;
     padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Theme transitions — animate color-ish properties on themed surfaces */
+body,
+.main-content,
+.sidebar,
+.chat-main,
+.chat-container,
+.chat-messages,
+.chat-input-container,
+#chatInput,
+.message-content,
+.suggested-item,
+.stat-item,
+.course-title-item,
+.sources-content .source-chip,
+.theme-toggle {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.theme-toggle:hover {
+    background: var(--surface-hover);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.theme-toggle:active {
+    transform: translateY(0);
+}
+
+.theme-toggle:focus-visible {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.theme-toggle .theme-icon {
+    position: absolute;
+    transition: opacity 0.3s ease, transform 0.4s ease;
+}
+
+/* Dark theme shows moon, hides sun */
+:root .theme-toggle .theme-icon-sun,
+[data-theme="dark"] .theme-toggle .theme-icon-sun {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.6);
+}
+
+:root .theme-toggle .theme-icon-moon,
+[data-theme="dark"] .theme-toggle .theme-icon-moon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+}
+
+/* Light theme shows sun, hides moon */
+[data-theme="light"] .theme-toggle .theme-icon-sun {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+}
+
+[data-theme="light"] .theme-toggle .theme-icon-moon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.6);
 }
 
 /* Container - Full Screen */
@@ -252,9 +366,9 @@ header h1 {
     display: inline-flex;
     align-items: center;
     padding: 0.25rem 0.7rem;
-    background: rgba(37, 99, 235, 0.1);
+    background: var(--source-chip-bg);
     color: var(--text-primary);
-    border: 1px solid rgba(37, 99, 235, 0.28);
+    border: 1px solid var(--source-chip-border);
     border-radius: 999px;
     font-size: 0.75rem;
     line-height: 1.4;
@@ -268,7 +382,7 @@ header h1 {
 }
 
 .sources-content .source-link:hover {
-    background: rgba(37, 99, 235, 0.22);
+    background: var(--source-chip-hover-bg);
     border-color: var(--primary-color);
     transform: translateY(-1px);
 }
@@ -311,7 +425,7 @@ header h1 {
 }
 
 .message-content code {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--code-bg);
     padding: 0.125rem 0.25rem;
     border-radius: 3px;
     font-family: 'Fira Code', 'Consolas', monospace;
@@ -319,7 +433,7 @@ header h1 {
 }
 
 .message-content pre {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--code-bg);
     padding: 0.75rem;
     border-radius: 4px;
     overflow-x: auto;
@@ -680,6 +794,13 @@ details[open] .suggested-header::before {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .theme-toggle {
+        top: 0.5rem;
+        right: 0.5rem;
+        width: 40px;
+        height: 40px;
+    }
+
     .main-content {
         flex-direction: column;
     }
