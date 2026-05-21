@@ -1,7 +1,6 @@
 import anthropic
 from typing import List, Optional, Dict, Any
 
-
 MAX_TOOL_ROUNDS = 2
 
 
@@ -40,16 +39,15 @@ Provide only the direct answer to what was asked.
         self.model = model
 
         # Pre-build base API parameters
-        self.base_params = {
-            "model": self.model,
-            "temperature": 0,
-            "max_tokens": 800
-        }
+        self.base_params = {"model": self.model, "temperature": 0, "max_tokens": 800}
 
-    def generate_response(self, query: str,
-                         conversation_history: Optional[str] = None,
-                         tools: Optional[List] = None,
-                         tool_manager=None) -> str:
+    def generate_response(
+        self,
+        query: str,
+        conversation_history: Optional[str] = None,
+        tools: Optional[List] = None,
+        tool_manager=None,
+    ) -> str:
         """
         Generate AI response with optional tool usage and conversation context.
 
@@ -98,19 +96,26 @@ Provide only the direct answer to what was asked.
                 tool_result_blocks = self._execute_tool_blocks(response.content, tool_manager)
             except Exception as e:
                 last_tool_use_id = next(
-                    (b.id for b in reversed(response.content)
-                     if getattr(b, "type", None) == "tool_use"),
+                    (
+                        b.id
+                        for b in reversed(response.content)
+                        if getattr(b, "type", None) == "tool_use"
+                    ),
                     "unknown",
                 )
-                messages.append({
-                    "role": "user",
-                    "content": [{
-                        "type": "tool_result",
-                        "tool_use_id": last_tool_use_id,
-                        "content": f"Tool execution failed: {e}",
-                        "is_error": True,
-                    }],
-                })
+                messages.append(
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "tool_result",
+                                "tool_use_id": last_tool_use_id,
+                                "content": f"Tool execution failed: {e}",
+                                "is_error": True,
+                            }
+                        ],
+                    }
+                )
                 return self._wrap_up_without_tools(messages, system_content)
 
             messages.append({"role": "user", "content": tool_result_blocks})
@@ -123,11 +128,13 @@ Provide only the direct answer to what was asked.
         for block in content:
             if getattr(block, "type", None) == "tool_use":
                 tool_output = tool_manager.execute_tool(block.name, **block.input)
-                results.append({
-                    "type": "tool_result",
-                    "tool_use_id": block.id,
-                    "content": tool_output,
-                })
+                results.append(
+                    {
+                        "type": "tool_result",
+                        "tool_use_id": block.id,
+                        "content": tool_output,
+                    }
+                )
         return results
 
     def _wrap_up_without_tools(self, messages: List[Dict[str, Any]], system_content: str) -> str:

@@ -13,7 +13,6 @@ from config import config
 from search_tools import CourseSearchTool
 from vector_store import VectorStore, SearchResults
 
-
 CHROMA_PATH = Path(__file__).resolve().parent.parent / "chroma_db"
 
 
@@ -38,9 +37,9 @@ def search_tool(vector_store):
 
 def test_config_max_results_is_positive():
     """The most direct symptom check: MAX_RESULTS must be > 0 for content search."""
-    assert config.MAX_RESULTS > 0, (
-        f"config.MAX_RESULTS={config.MAX_RESULTS}; ChromaDB's query() rejects n_results=0"
-    )
+    assert (
+        config.MAX_RESULTS > 0
+    ), f"config.MAX_RESULTS={config.MAX_RESULTS}; ChromaDB's query() rejects n_results=0"
 
 
 def test_execute_returns_content_for_known_query(search_tool):
@@ -62,9 +61,7 @@ def test_execute_with_course_name_filter(search_tool):
 
 
 def test_execute_with_lesson_filter(search_tool):
-    result = search_tool.execute(
-        query="introduction", course_name="MCP", lesson_number=0
-    )
+    result = search_tool.execute(query="introduction", course_name="MCP", lesson_number=0)
     assert not result.startswith("Search error"), result
     # Every chunk header for a lesson-filtered search must reference Lesson 0.
     for line in result.splitlines():

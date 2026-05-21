@@ -329,8 +329,10 @@ def test_tool_execution_exception_terminates_with_wrap_up(mock_anthropic_class, 
 
 def test_tool_use_with_no_tool_manager_returns_text_safely(mock_anthropic_class, gen):
     resp = _response(
-        [_tool_use_block("search_course_content", {"query": "foo"}, id="tu_1"),
-         _text_block("fallback")],
+        [
+            _tool_use_block("search_course_content", {"query": "foo"}, id="tu_1"),
+            _text_block("fallback"),
+        ],
         stop_reason="tool_use",
     )
     mock_anthropic_class.messages.create.return_value = resp

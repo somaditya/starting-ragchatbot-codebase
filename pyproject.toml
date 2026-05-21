@@ -16,5 +16,19 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "black>=26.5.1",
     "pytest>=9.0.3",
 ]
+
+[tool.black]
+line-length = 100
+target-version = ["py313"]
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+    \.venv
+  | \.git
+  | backend/chroma_db
+  | node_modules
+)/
+'''

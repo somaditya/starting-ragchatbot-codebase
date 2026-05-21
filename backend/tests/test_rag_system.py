@@ -14,7 +14,6 @@ import pytest
 from config import config
 from rag_system import RAGSystem
 
-
 CHROMA_PATH = Path(__file__).resolve().parent.parent / "chroma_db"
 
 
@@ -68,9 +67,7 @@ def test_content_query_returns_answer_and_sources_without_raising(rag, scripted_
 
 def test_search_tool_is_invoked_for_content_query(rag, scripted_anthropic):
     _script_tool_then_answer(scripted_anthropic, {"query": "What is MCP?"})
-    with patch.object(
-        rag.tool_manager, "execute_tool", wraps=rag.tool_manager.execute_tool
-    ) as spy:
+    with patch.object(rag.tool_manager, "execute_tool", wraps=rag.tool_manager.execute_tool) as spy:
         rag.query("What is MCP?")
     spy.assert_called_once()
     args, kwargs = spy.call_args
