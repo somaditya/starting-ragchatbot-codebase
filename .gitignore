@@ -29,3 +29,7 @@ uploads/
 # OS
 .DS_Store
 Thumbs.db
+
+# Node tooling (Prettier)
+node_modules/
+npm-debug.log*

@@ -14,7 +14,11 @@
       "Bash(convert /tmp/page2.png -crop 320x250+0+0 /tmp/sidebar_crop.png)",
       "Read(//tmp/**)",
       "Bash(uv run *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(npm --version)",
+      "Bash(uv add *)",
+      "Bash(npm install *)",
+      "Bash(npx prettier *)"
     ]
   }
 }

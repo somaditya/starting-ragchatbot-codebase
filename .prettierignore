@@ -1,0 +1,8 @@
+node_modules/
+backend/
+docs/
+.venv/
+uv.lock
+backend/chroma_db/
+*.min.js
+*.min.css
